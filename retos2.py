@@ -83,3 +83,5 @@ else:
     print(f"La potencia del número ingresado entre sí es: {pow(lista_reto4[0], int(lista_reto4[0]))}")
 print("")
 print(f"El promedio de estos números es: {sum(lista_reto4) / len(lista_reto4)}")
+
+print("")
