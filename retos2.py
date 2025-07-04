@@ -80,6 +80,6 @@ print("")
 if input_numeros > 1:
     print(f"La potencia del primer número elevado al segundo es: {pow(lista_reto4[0], int(lista_reto4[1]))}") # Tomará solo los dos primeros números para no complicarnos la vida
 else:
-    print(f"La potencia del número ingresado entre sí es: {pow(lista_reto4[0], lista_reto4[0])}")
+    print(f"La potencia del número ingresado entre sí es: {pow(lista_reto4[0], int(lista_reto4[0]))}")
 print("")
 print(f"El promedio de estos números es: {sum(lista_reto4) / len(lista_reto4)}")
