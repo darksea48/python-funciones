@@ -38,3 +38,5 @@ print("Censurada:", frase_censurada, "\n")
 print("Cantidad de caracteres:", len(input_frase), "\n")
 
 # Reto 3
+print("Reto 3\n")
+
