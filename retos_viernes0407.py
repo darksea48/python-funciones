@@ -40,3 +40,4 @@ print("Cantidad de caracteres:", len(input_frase), "\n")
 # Reto 3
 print("Reto 3\n")
 
+input_palabra_secreta = input("Ingrese una palabra secreta: ")
