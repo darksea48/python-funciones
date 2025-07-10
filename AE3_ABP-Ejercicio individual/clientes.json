@@ -1,0 +1,32 @@
+[
+    {
+        "id_cliente": 11111111,
+        "nombre": "Cliente 1",
+        "edad": 30,
+        "compras_hechas": 5
+    },
+    {
+        "id_cliente": 12345678,
+        "nombre": "Cliente 2",
+        "edad": 25,
+        "compras_hechas": 5
+    },
+    {
+        "id_cliente": 87654321,
+        "nombre": "Cliente 3",
+        "edad": 40,
+        "compras_hechas": 1
+    },
+    {
+        "id_cliente": 54321987,
+        "nombre": "Cliente 4",
+        "edad": 35,
+        "compras_hechas": 2
+    },
+    {
+        "id_cliente": 98787898,
+        "nombre": "Douglas",
+        "edad": 31,
+        "compras_hechas": 1
+    }
+]

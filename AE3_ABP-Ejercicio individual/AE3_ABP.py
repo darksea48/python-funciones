@@ -1,4 +1,11 @@
-clientes = [
+from typing import Any, Hashable, Iterable, Optional
+import sys
+import json
+
+CLIENTES_FILE = "clientes.json"
+PRODUCTOS_FILE = "productos.json"
+
+default_clientes = [
     {
         "id_cliente": 11111111,
         "nombre": "Cliente 1",
@@ -14,11 +21,11 @@ clientes = [
     {
         "id_cliente": 87654321,
         "nombre": "Cliente 3",
-        "edad": 40,
+        "edad": 40, 
         "compras_hechas": 1,
     },
 ]
-productos = [
+default_productos = [
     {
         "id_producto": 1,
         "nombre": "Producto 1",
@@ -76,31 +83,153 @@ productos = [
     },
 ]
 
-try:
-    cliente = int(input("Ingrese su id de cliente: "))
-except ValueError:
-    while cliente is ValueError:
-        print("Entrada inválida. Intente nuevamente")
+def cargar_datos(archivo: str, default_data: list) -> list:
+    try:
+        with open(archivo, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default_data
+
+def guardar_datos(archivo: str, datos: list):
+    try:
+        with open(archivo, 'w', encoding='utf-8') as f:
+            json.dump(datos, f, indent=4, ensure_ascii=False)
+    except IOError as e:
+        print(f"Error al guardar el archivo {archivo}: {e}")
+
+clientes = cargar_datos(CLIENTES_FILE, default_clientes)
+productos = cargar_datos(PRODUCTOS_FILE, default_productos)
+
+dia_promo = False
+
+while True:
+    consulta_dia_promo = input("¿Hoy es día especial de promoción? (S/N): ").upper().strip()
+    if consulta_dia_promo in ["S", "N"]:
+        dia_promo = True
+        break
+    print("Entrada inválida. Por favor, ingrese 'S' para Sí o 'N' para No.")
+
+# --- Búsqueda de Cliente ---
+while True:
+    try:
         cliente = int(input("Ingrese su id de cliente: "))
+        break
+    except ValueError:
+        print("Entrada inválida. Intente nuevamente")
 
-cliente_encontrado = clientes.get("id_cliente")
+def menu_productos():
+    print("==================================================")
+    print("PRODUCTOS DISPONIBLES:".center(50))
+    print("==================================================")
+    for producto in productos:
+        print(producto["id_producto"], "-", producto["nombre"], "- Precio:", producto["precio"])
 
-if cliente_encontrado is KeyError:
-    print("Cliente no encontrado. ¿Quieres agregarlo?")
-    confirmacion = input("S = Sí / N = No: ")[0:1]
-    confirmacion = confirmacion.upper()
-    while confirmacion != "S" and confirmacion != "N":
-        print("Entrada inválida. Ingrese nuevamente.")
-        confirmacion = input("S = Sí / N = No: ")[0:1]
+def buscar_dicc(it: Iterable[dict], clave: Hashable, valor: Any) -> Optional[dict]:
+    for dicc in it:
+        if dicc[clave] == valor:
+            return dicc
+    return None
+
+cliente_encontrado = buscar_dicc(clientes, "id_cliente", cliente)
+
+if not cliente_encontrado:
+    print("\nCliente no encontrado.")
+    while True:
+        confirmacion = input("¿Desea registrarse como nuevo cliente? (S/N): ").upper().strip()
+        if confirmacion in ["S", "N"]:
+            break
+        print("Entrada inválida. Por favor, ingrese 'S' para Sí o 'N' para No.")
+
     if confirmacion == "S":
         nombre = input("Ingrese su nombre: ")
-        edad = int(input("Ingrese su edad: "))
+        while True:
+            try:
+                edad = int(input("Ingrese su edad: "))
+                break
+            except ValueError:
+                print("Edad inválida. Debe ser un número.")
+        
         nuevo_cliente = {
             "id_cliente": cliente,
             "nombre": nombre,
             "edad": edad,
             "compras_hechas": 0
         }
-        nuevo_cliente.append()
+        clientes.append(nuevo_cliente)
+        guardar_datos(CLIENTES_FILE, clientes) # Guardamos el nuevo cliente
+        cliente_encontrado = nuevo_cliente  # Asignar el nuevo cliente a la variable
+        print(f"\n¡Bienvenido, {nombre}! Cliente registrado con éxito.")
 
+# --- Lógica de Descuento ---
 descuento = 0
+
+if cliente_encontrado:
+    if cliente_encontrado.get("compras_hechas", 0) > 5:
+        descuento = descuento + 5
+
+# --- Proceso de Compra ---
+carrito = []
+compra = True
+cant_articulos = 0
+
+while compra == True:
+    menu_productos()
+    producto_comprado = int(input("Ingrese el id del producto que desea comprar (Coloque 0 para terminar de ingresar productos): "))
+    while producto_comprado is ValueError:
+        print("Entrada inválida. Intente nuevamente")
+        producto_comprado = int(input("Ingrese el id del producto que desea comprar (Coloque 0 para terminar de ingresar productos): "))
+    if producto_comprado != 0:
+        producto = buscar_dicc(productos, "id_producto", producto_comprado)
+        if not producto:
+            print("Producto no encontrado. Ingrese otro producto.")
+        else:
+            n_producto = int(input("Ingrese la cantidad que desea comprar: "))
+            while n_producto is ValueError or n_producto == 0:
+                if n_producto == 0:
+                    print("Debe ingresar algúna cantidad")
+                else:
+                    print("Entrada inválida. Intente nuevamente")
+                n_producto = int(input("Ingrese la cantidad que desea comprar: "))
+            producto_agregado = {"id_producto": producto["id_producto"], "nombre": producto["nombre"], "precio": producto["precio"], "cantidad": n_producto,}
+            carrito.append(producto_agregado)
+            print("Producto agregado al carrito.")
+    elif producto_comprado == 0 and len(carrito) > 0: 
+        print("==================================================")
+        print("Carrito".center(50))
+        print("==================================================")
+        for indice, productos_carritos in enumerate(carrito):
+            cant_articulos += productos_carritos["cantidad"]
+            precio_item = productos_carritos["precio"] * productos_carritos["cantidad"]
+            if indice != 0:
+                print("--------------------------------------------------")
+            print(productos_carritos["id_producto"], " ", productos_carritos["nombre"], "-- Precio unitario:", productos_carritos["precio"])
+            print("Cantidad:", productos_carritos["cantidad"], "- Precio:", precio_item)
+        if cant_articulos > 10:
+            descuento += 10
+        subtotal = 0
+        for productos_carritos in carrito:
+            subtotal += (productos_carritos["precio"] * productos_carritos["cantidad"])
+        if dia_promo == True:
+            descuento += 15
+        if descuento > 30:
+            descuento = 30
+        else:
+            descuento = descuento
+        if descuento > 0:
+            precio_descuento = round((subtotal * descuento) / 100)
+        print("==================================================")
+        print("Subtotal:", subtotal)
+        print("Porcentaje Descuento:", descuento, "% - Descuento:", precio_descuento)
+        print("TOTAL:", subtotal - precio_descuento)
+        print("==================================================")
+        if cliente_encontrado:    
+            cliente_encontrado["compras_hechas"] += 1
+            guardar_datos(CLIENTES_FILE, clientes)
+        print("Gracias por su visita")
+        # Cerramos la compra
+        carrito = []
+        compra = False
+        cant_articulos = 0
+    else:
+        print("No hay productos en el carrito. Gracias por su visita.")
+        compra = False
