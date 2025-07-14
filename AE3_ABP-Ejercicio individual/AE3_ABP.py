@@ -83,6 +83,7 @@ default_productos = [
     },
 ]
 
+# Funciones a usar
 def cargar_datos(archivo: str, default_data: list) -> list:
     try:
         with open(archivo, 'r', encoding='utf-8') as f:
@@ -117,9 +118,11 @@ def abrir_nueva_compra():
         ingresar_nueva_compra = input("¿Desea realizar otra compra? (S/N): ")[:1].upper().strip()
     return ingresar_nueva_compra == "S"
 
+# cargas de datos json
 clientes = cargar_datos(CLIENTES_FILE, default_clientes)
 productos = cargar_datos(PRODUCTOS_FILE, default_productos)
 
+# inicio de programación
 dia_promo = False
 
 consulta_dia_promo = input("¿Hoy es día especial de promoción? (S/N): ")[:1].upper().strip()
@@ -130,7 +133,6 @@ while consulta_dia_promo not in ["S", "N"]:
 if consulta_dia_promo == "S":
     dia_promo = True
 
-contador_ventas = 0
 nueva_compra = True
 
 while nueva_compra == True:
