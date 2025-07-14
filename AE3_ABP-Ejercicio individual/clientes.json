@@ -3,13 +3,13 @@
         "id_cliente": 11111111,
         "nombre": "Cliente 1",
         "edad": 30,
-        "compras_hechas": 5
+        "compras_hechas": 6
     },
     {
         "id_cliente": 12345678,
         "nombre": "Cliente 2",
         "edad": 25,
-        "compras_hechas": 5
+        "compras_hechas": 4
     },
     {
         "id_cliente": 87654321,
@@ -25,8 +25,14 @@
     },
     {
         "id_cliente": 98787898,
-        "nombre": "Douglas",
+        "nombre": "Cliente 5",
         "edad": 31,
+        "compras_hechas": 1
+    },
+    {
+        "id_cliente": 51213111,
+        "nombre": "Cliente 7",
+        "edad": 32,
         "compras_hechas": 1
     }
 ]
