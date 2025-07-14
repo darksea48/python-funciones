@@ -78,17 +78,38 @@ print(tupla[2:5])
 
 # estudiante = ["Elena", "De Troya", 22, "elena@skillnest.com", "Python", False] # Lista
 
-estudiante1 = {"nombre": "Elena","apellido": "De Troya","edad": 22,"correo": "elena@skillnest.com","curso": "Python","es_casado": False}
+estudiante1 = {"nombre": "Elena", "apellido": "De Troya", "email": "elena@skillnest.com", "edad": 22}
 estudiante2 = {
     "nombre": "Juana",
-    "apellido": "de Arco",
-    "edad": 22,
-    "correo": "juana@skillnest.com"
+    "apellido": "De Arco",
+    "email": "juana@skillnest.com",
+    "edad": 30
 }
+print(estudiante2["edad"])
 
+estudiante2["edad"] = 31
 print(estudiante2)
 
-print(estudiante2["nombre"])
+estudiante2["curso"] = "Python" #Agregando un nuevo par de clave-valor
+print(estudiante2)
+
+estudiante1.pop("edad") #Eliminar el elemento con clave "edad"
+print(estudiante1)
+
+skillnest = {
+    "nombre": "Skillnest",
+    "fecha_inicial": "2025-07-11",
+    "cursos": [
+        {"nombre": "Python", "duracion": 24, "modulos": ["Modulo 1", "Modulo 2", "Modulo 3", "Modulo 4", "Modulo 5"]},
+        {"nombre": "Java", "duracion": 16, "modulos": ["Fundamentos de Java", "POO", "Spring", "MVC"]}
+    ]
+}
+
+skillnest["cursos"][0]["modulos"][2] = "Fundamentos de Python"
+
+#Impresión linda
+from pprint import pprint
+pprint(skillnest)
 
 # Sets 
 
