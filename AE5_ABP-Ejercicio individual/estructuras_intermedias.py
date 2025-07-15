@@ -47,11 +47,13 @@ for cantante in cantantes:
 
 print()
 # 3. Obtener valores específicos desde una lista de diccionarios:  Utilizando la lista cantantes, imprime por separado todos los valores correspondientes a la clave "nombre". Luego, imprime todos los valores correspondientes a la clave "pais".
+print("Nombres:")
 for cantante in cantantes:
-    print(f"Nombre: {cantante['nombre']}")
+    print(cantante['nombre'])
 print()
+print("Paises:")
 for cantante in cantantes:
-    print(f"País: {cantante['pais']}")
+    print(cantante['pais'])
 
 print()
 # 4. Recorrer un diccionario con listas como valores:  Dado el siguiente diccionario:
@@ -63,13 +65,7 @@ costa_rica = {
 
 # La cantidad de elementos en cada lista seguida del nombre de la clave en mayúsculas.
 for clave, lista_valores in costa_rica.items():
-    print(f"{len(lista_valores)} {clave.capitalize()}")
-
-print()
-
-# Cada elemento de la lista correspondiente, en líneas separadas.
-for i in costa_rica.keys():
-    print(i.capitalize())
-    for j in costa_rica[i]:
-        print(j)
+    print(f"{len(lista_valores)} {clave.upper()}")
+    for valor in lista_valores:
+        print(valor.capitalize())
     print()
