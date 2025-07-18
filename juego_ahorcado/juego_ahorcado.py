@@ -102,7 +102,7 @@ while True:
             print("Entrada no válida. Ingresa 's' o 'n'.")
             jugar_nuevo = input("¿Seguir jugando?\nSi sales del juego antes de quedar sin vidas, tendrás una penalización de 25 puntos. (s/n): ")[:1].lower()
         if jugar_nuevo == 'n':
-            penalizacion = vidas * 5
+            penalizacion = vidas * 5 # la penalización será en base a la cantidad de vidas que tenía
             print(f"¡Gracias por jugar! Por salir antes del juego, tendrás una penalización de {penalizacion} puntos.")
             puntuacion -= penalizacion # Penalización por salir del juego sin acabar sus vidas
             break

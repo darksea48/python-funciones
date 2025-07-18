@@ -56,25 +56,36 @@ def cambio_coordenadas(coordenada=9.9355431):
     print(coordenadas)
 
 cambio_coordenadas()
-
+print()
 # 2. Iterar a través de una lista de diccionarios: Crea la función iterarDiccionario(lista) que reciba una lista de diccionarios y recorra cada diccionario de la lista e imprima cada llave y el valor correspondiente.
 cantantes = [
    {"nombre": "Ricky Martin", "pais": "Puerto Rico"},
    {"nombre": "Chayanne", "pais": "Puerto Rico"},
    {"nombre": "José José", "pais": "México"},
-   {"nombre": "Juan Luis Guerra", "pais": "República Dominicana"}
+   {"nombre": "Juan Luis Guerra", "pais": "República Dominicana"},
+   {"nombre": "Kaarija", "pais": "Finlandia"},
+   {"apodo": "Er niño", "pais": "España"} # El nombre artístico es Raphael
 ]
 
 def iterarDiccionario(lista):
     for i in lista:
-        print(f"Nombre - {i['nombre']}, País - {i['pais']}")
+        frase = ""
+        for clave, valor in i.items():
+            if frase == "":
+                frase += f"{clave.title()} - {valor}"
+            else:
+                frase += f", {clave.title()} - {valor}"
+        print(frase)
 
 iterarDiccionario(cantantes)
 print()
 # 3. Obtener valores de una lista de diccionarios Crea la función iterarDiccionario2(llave, lista) que reciba una cadena con el nombre de una llave y una lista de diccionarios. La función debe imprimir el valor almacenado para esa clave de cada diccionario que se encuentra en la lista
 def iterarDiccionario2(llave, lista):
     for i in lista:
-        print(i[llave])
+        try:
+            print(i[llave])
+        except KeyError:
+            print("No existe este dato en este registro.")
 
 iterarDiccionario2("nombre", cantantes)
 print()
@@ -87,19 +98,33 @@ costa_rica = {
    "comidas": ["gallo pinto", "casado", "tamales", "chifrijo", "olla de carne"]
 }
 chile = {
-   "ciudades": ["Santiago", "Concepción", "Viña del Mar", "Punta Arenas"],
-   "comidas": ["empanada de pino", "cazuela", "curanto", "mote con huesillos", "terremoto"]
+   "ciudades": ["Santiago", "Concepción", "Viña del Mar", "Punta Arenas", "Ñuble", "Valdivia", "Osorno"],
+   "comidas": ["empanada de pino", "cazuela", "curanto", "mote con huesillos", "terremoto", "charquicán", "pastel de choclo"],
+   "localidades": ["Torres del Paine", "Salto del Laja", "Cerro San Cristobal", "Cerro Santa Lucía"],
+   "regiones": ["Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", "Coquimbo", "Valparaíso", "Libertador Gral. Bernardo O’Higgins", "Maule", "Biobío", "Araucanía", "Los Ríos", "Los Lagos", "Aysén del Gral. Carlos Ibáñez del Campo", "Magallanes y Antártica Chilena", "Metropolitana de Santiago", "Ñuble"]
 }
 
 def imprimirInformacion(diccionario):
     for clave, lista_valores in diccionario.items():
         print(f"{len(lista_valores)} {clave.upper()}")
         for valor in lista_valores:
-            if clave == "ciudades":
-                print(valor)
-            else:
-                print(valor.capitalize())
+            print(valor)
         print()
 
 imprimirInformacion(costa_rica)
 imprimirInformacion(chile)
+
+import locale
+
+def imprimirInformacionOrdenada(diccionario):
+    locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
+
+    for clave, lista_valores in diccionario.items():
+        print(f"{len(lista_valores)} {clave.upper()}")
+        for valor in sorted(lista_valores, key=lambda item: locale.strxfrm(item[0])):
+            print(valor)
+        print()
+    
+
+imprimirInformacionOrdenada(costa_rica)
+imprimirInformacionOrdenada(chile)
