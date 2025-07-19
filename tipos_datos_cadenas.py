@@ -1,4 +1,5 @@
 # Cadenas
+import datetime
 
 nombre = "Juana"
 edad = 30
@@ -33,3 +34,5 @@ frase = "Hola"
 print(f"{frase:>10}")  # Justificar a la derecha
 print(f"{frase:<10}")  # Justificar a la izquierda
 print(f"{frase:^10}")  # Centrado
+
+print(datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
