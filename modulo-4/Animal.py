@@ -67,3 +67,6 @@ class Animal:
             return 100
         else:
             return suma
+    
+    def ir_al_bano(self):
+        raise NotImplementedError
