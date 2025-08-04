@@ -3,18 +3,18 @@ from time import sleep
 import random
 
 class Tamagotchi:
-    def __init__(self, nombre, color, duenio, tipo=(random.choice(["Kuchipatchi", "Mimitchi"]))):
+    
+    colores = ["rojo", "amarillo", "verde", "azul", "violeta"]
+    
+    def __init__(self, nombre, duenio, color=random.choice(colores)):
         self.nombre = nombre
         self.color = color
         self.salud = 100
         self.energia = 100
         self.felicidad = 100
-        self.tipo = tipo
         self.duenio = duenio
         
-        print(f"¡Bienvenido, {self.nombre}! Has sido creado con éxito.")
-        print(f"¡Espero que disfrutes conmigo!")
-        print(f"El nombre de tu tamagotchi es {self.nombre}, y es un/a {self.tipo} de color {self.color}.")
+        print(f"¡Un nuevo Tamagotchi llamado {self.nombre} ha nacido!")
     
     def presentarse(self):
         raise NotImplementedError
@@ -23,24 +23,38 @@ class Tamagotchi:
         self.energia += Tamagotchi.calcula_valor(self.energia, 10)
         self.felicidad += Tamagotchi.calcula_valor(self.felicidad, 5)
         self.salud += Tamagotchi.calcula_valor(self.salud, 10)
-        print(f"{self.nombre} está comiendo. ¡Está muy contento!")
+        print(f"{self.nombre} está comiendo.")
+        sleep(random.randint(1, 5))
+        print(f"{self.nombre} ha comido. ¡Está muy contento!")
+        sleep(1)
         
     def jugar(self, tiempo):
         if tiempo <= 30:
-            self.energia -= Tamagotchi.calcula_valor(self.energia, 5)
+            self.energia -= 5
             self.felicidad += Tamagotchi.calcula_valor(self.felicidad, 10)
         else:
-            self.energia -= Tamagotchi.calcula_valor(self.energia, round(tiempo/6))
+            self.energia -= round(tiempo/6)
             self.felicidad += Tamagotchi.calcula_valor(self.felicidad, round(tiempo/3))
-        self.salud -= Tamagotchi.calcula_valor(self.salud, 5)
+        self.salud -= 5
+        print(f"{self.nombre} está jugando.")
         sleep(round(tiempo/6))
-        print(f"{self.nombre} está jugando. ¡Está muy contento!")
+        print(f"{self.nombre} ha jugado por {tiempo} minutos. ¡Está muy contento!")
+        sleep(1)
         
     def curar(self):
+        energia_tiempo = (100 - self.energia) / 10
+        felicidad_tiempo = (100 - self.felicidad) / 10
+        salud_tiempo = (100 - self.salud) / 10
+        print(f"¡Estás curando a {self.nombre}! Espera un momento...")
+        sleep(round(energia_tiempo + felicidad_tiempo + salud_tiempo))
         self.energia = 100
         self.felicidad = 100
         self.salud = 100
         print(f"¡Has curado a {self.nombre}! ¡Está muy sano y contento!")
+        print(f"Salud: {self.salud} / 100")
+        print(f"Energía: {self.energia} / 100")
+        print(f"Felicidad: {self.felicidad} / 100")
+        sleep(1)
         
     def consultar_datos(self):
         print(f"Datos de tu tamagotchi: {self.nombre}")
