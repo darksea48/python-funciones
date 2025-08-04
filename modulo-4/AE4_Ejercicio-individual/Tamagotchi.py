@@ -20,9 +20,9 @@ class Tamagotchi:
         raise NotImplementedError
     
     def comer(self):
-        self.energia += Tamagotchi.calcula_valor(self.energia, 10)
-        self.felicidad += Tamagotchi.calcula_valor(self.felicidad, 5)
-        self.salud += Tamagotchi.calcula_valor(self.salud, 10)
+        self.energia = Tamagotchi.calcula_valor(self.energia, 10, "suma")
+        self.felicidad = Tamagotchi.calcula_valor(self.felicidad, 5, "suma")
+        self.salud = Tamagotchi.calcula_valor(self.salud, 10, "suma")
         print(f"{self.nombre} está comiendo.")
         sleep(random.randint(1, 5))
         print(f"{self.nombre} ha comido. ¡Está muy contento!")
@@ -30,12 +30,12 @@ class Tamagotchi:
         
     def jugar(self, tiempo):
         if tiempo <= 30:
-            self.energia -= 5
-            self.felicidad += Tamagotchi.calcula_valor(self.felicidad, 10)
+            self.energia = Tamagotchi.calcula_valor(self.energia, 5, "resta")
+            self.felicidad = Tamagotchi.calcula_valor(self.felicidad, 10, "suma")
         else:
-            self.energia -= round(tiempo/6)
-            self.felicidad += Tamagotchi.calcula_valor(self.felicidad, round(tiempo/3))
-        self.salud -= 5
+            self.energia = Tamagotchi.calcula_valor(self.energia,round(tiempo/6), "resta")
+            self.felicidad = Tamagotchi.calcula_valor(self.felicidad, round(tiempo/3), "suma")
+        self.salud = Tamagotchi.calcula_valor(self.energia, 5, "resta")
         print(f"{self.nombre} está jugando.")
         sleep(round(tiempo/6))
         print(f"{self.nombre} ha jugado por {tiempo} minutos. ¡Está muy contento!")
@@ -65,10 +65,19 @@ class Tamagotchi:
         return self
     
     @staticmethod
-    def calcula_valor(valor, cambio_valor):
-        suma = valor + cambio_valor
-        if suma > 100:
-            return 100
+    def calcula_valor(valor, cambio_valor, operatoria):
+        if operatoria == "suma":
+            suma = valor + cambio_valor
+            if suma > 100:
+                return 100
+            else:
+                return suma
+        elif operatoria == "resta":
+            resta = valor - cambio_valor
+            if resta < 0:
+                return 0
+            else:
+                return resta
         else:
-            return suma
+            return 0
     
